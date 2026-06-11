@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gluten Free Guide · Aldea Comporta</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4ef;color:#1a1a1a;min-height:100vh}
+.header{background:#C4714A;padding:1.25rem 1.25rem 1.1rem;position:sticky;top:0;z-index:10}
+.logo-text{font-family:Georgia,serif;font-size:18px;letter-spacing:0.25em;color:#fff;text-transform:uppercase;margin-bottom:4px}
+.logo-line{width:28px;height:1px;background:#fff;margin-bottom:10px}
+.header-title{font-size:15px;font-weight:400;color:#ccc;letter-spacing:0.05em}
+.legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.leg{font-size:10px;font-weight:500;padding:2px 9px;border-radius:20px;letter-spacing:0.03em}
+.leg-gf{background:rgba(255,255,255,0.2);color:#fff}
+.leg-eco{background:rgba(255,255,255,0.2);color:#fff}
+.leg-store{background:rgba(255,255,255,0.2);color:#fff}
+.search-wrap{background:#fff;padding:0.6rem 1rem;border-bottom:1px solid #e5e5e0}
+.search-wrap input{width:100%;padding:8px 13px;border:1px solid #ddd;border-radius:10px;font-size:15px;background:#f9f9f7;color:#1a1a1a;outline:none}
+.controls{background:#fff;padding:0.5rem 1rem;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid #e5e5e0}
+.filter-btn{background:#fff;border:1px solid #ddd;border-radius:20px;padding:5px 12px;font-size:11px;cursor:pointer;color:#555;transition:all 0.15s;white-space:nowrap;letter-spacing:0.03em}
+.filter-btn.active{background:#C4714A;color:#fff;border-color:#C4714A}
+.count{font-size:11px;color:#999;padding:0.5rem 1rem 0;letter-spacing:0.03em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;padding:0.75rem}
+.card{background:#fff;border:1px solid #e8e8e4;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.card-img-wrap{width:100%;height:120px;background:#f5f5f2;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:6px}
+.card-img-wrap img{max-width:100%;max-height:100%;object-fit:contain}
+.card-img-placeholder{width:100%;height:120px;background:#f0f0ec;display:flex;align-items:center;justify-content:center;font-size:30px}
+.card-body{padding:0.65rem 0.75rem;flex:1;display:flex;flex-direction:column;gap:5px}
+.brand-row{display:flex;align-items:center;gap:5px}
+.brand-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;font-family:Georgia,serif}
+.brand-name{font-size:10px;color:#aaa;font-weight:400;letter-spacing:0.04em;text-transform:uppercase}
+.card-name{font-size:12px;font-weight:500;color:#1a1a1a;line-height:1.35;flex:1}
+.card-desc{font-size:10px;color:#bbb;line-height:1.3}
+.card-badges{display:flex;flex-wrap:wrap;gap:3px;margin-top:1px}
+.tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.tag-gf{background:#e6f4ec;color:#1a6640}
+.tag-eco{background:#eaf3de;color:#3B6D11}
+.tag-store{background:#e6f0fb;color:#1a4a80}
+.buy-links{display:flex;flex-direction:column;gap:3px;margin-top:5px}
+.buy-btn{display:block;text-align:center;font-size:10px;font-weight:500;padding:5px 6px;border-radius:7px;text-decoration:none;transition:opacity 0.15s;letter-spacing:0.02em}
+.buy-btn:hover{opacity:0.75}
+.b-cont{background:#fff3e0;color:#7d4700;border:1px solid #ffd180}
+.b-cel{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
+.b-nat{background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9}
+.b-cel2{background:#f5e8e8;color:#be1717;border:1px solid #d6a5a5}
+.empty{padding:3rem;text-align:center;color:#aaa;font-size:13px;grid-column:1/-1}
+.footer{background:#C4714A;padding:1rem 1.25rem;margin-top:2rem;text-align:center}
+.footer a{color:rgba(255,255,255,0.75);font-size:11px;letter-spacing:0.1em;text-decoration:none;text-transform:uppercase}
+@media(max-width:380px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:8px;padding:0.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-text">Aldea Comporta</div>
+  <div class="logo-line"></div>
+  <div class="header-title">Product Guide · Portugal 🇵🇹</div>
+  <div class="legend">
+    <span class="leg leg-gf">🌾 Gluten free</span>
+    <span class="leg leg-eco">🍃 Organic</span>
+    <span class="leg leg-store">🏪 Store</span>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input type="text" id="searchInput" placeholder="Search product or brand..." oninput="render()">
+</div>
+
+<div class="controls" id="brandCtrl">
+  <button class="filter-btn active" data-brand="all">All brands</button>
+  <button class="filter-btn" data-brand="schar">Dr. Schär</button>
+  <button class="filter-btn" data-brand="rudehealth">Rude Health</button>
+  <button class="filter-btn" data-brand="rummo">Rummo</button>
+  <button class="filter-btn" data-brand="ecocesta">Ecocesta</button>
+  <button class="filter-btn" data-brand="naturefoods">Naturefoods</button>  
+  <button class="filter-btn" data-brand="provida">Provida</button>
+  <button class="filter-btn" data-brand="celeiro">Vida Celeiro</button>
+  <button class="filter-btn" data-brand="continente">Continente BIO</button>
+</div>
+<div class="controls" id="catCtrl">
+  <button class="filter-btn active" data-cat="all">All categories</button>
+  <button class="filter-btn" data-cat="bread">Bread & Crackers</button>
+  <button class="filter-btn" data-cat="pasta">Pasta & Rice</button>
+  <button class="filter-btn" data-cat="cereals">Cereals & Breakfast</button>
+  <button class="filter-btn" data-cat="snacks">Biscuits & Snacks</button>
+  <button class="filter-btn" data-cat="drinks">Plant drinks</button>
+  <button class="filter-btn" data-cat="flour">Flours & Baking</button>
+  <button class="filter-btn" data-cat="nuts">Seeds & Nuts</button>
+  <button class="filter-btn" data-cat="sweet">Sugar, Honey & Sweeteners</button>
+  <button class="filter-btn" data-cat="oil">Oil & Vinager</button>
+</div>
+
+<div class="count" id="count"></div>
+<div class="grid" id="grid"></div>
+
+<div class="footer">
+  <a href="https://aldeacomporta.com" target="_blank">aldeacomporta.com</a>
+</div>
+
+<script>
+// Image base URLs — Continente uses a predictable pattern
+const C = "https://www.continente.pt/on/demandware.static/-/Sites-col-master-catalog/default/images/col/";
+const RH = "https://rudehealth.com/cdn/shop/files/";
+
+const DATA=[
+  // ── DR. SCHÄR ─────────────────────────────────────────────
+  {brand:"schar",name:"Classic white bread",cat:"bread",eco:false,gf:true,
+   img:"https://imgs0.schaer.com/es/image/product/pan_de_molde_cl_sico/_p880_pan_de_molde_cl_sico_1000130400_16440.jpg",
+   desc:"Sourdough, millet & quinoa · 300g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/pao-classico-sem-gluten-schar-5296290.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/329156-pao-de-forma-classico-sem-gluten-300-gramas-kg-schar",c:"b-cel"},]},
+  {brand:"schar",name:"Multigrain bread",cat:"bread",eco:false,gf:true,
+   img:"https://imgs2.schaer.com/es/image/product/pan_de_molde_con_cereales/_p880_pan_de_molde_con_cereales_10404_17582.jpg",
+   desc:"Seeds, quinoa & millet · 300g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/pao-classico-cereais-sem-gluten-schar-5296274.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/330916-pao-de-forma-de-cereais-e-sementes-sem-gluten-300-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Rustic loaf (Caseiro)",cat:"bread",eco:false,gf:true,
+   img:"https://imgs3.schaer.com/es/image/product/pan_pay_s/_p880_pan_pay_s_10407_15783.jpg",
+   desc:"Soft & flavourful · 240g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/pao-caseiro-sem-gluten-schar-5296404.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/214438-pao-fatiado-sem-gluten-240-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Crisp toasts",cat:"bread",eco:false,gf:true,
+   img:"https://imgs2.schaer.com/es/image/product/pan_tostado/_p880_pan_tostado_10429_16182.jpg",
+   desc:"Lactose free · 150g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/tostas-sem-gluten-sem-lactose-schar-4370854.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/849227-tostas-sem-gluten-260-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Pan bread flour (Mix B)",cat:"flour",eco:false,gf:true,
+   img:"https://imgs0.schaer.com/es/image/product/mix_b_mix_pan/_p880_mix_b_mix_pan_1006010910_16510.jpg",
+   desc:"For homemade bread · 1kg",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/farinha-mix-pao-sem-gluten-schar-4874100.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/958868-mix-pao-farinha-para-elaboracao-de-pao-sem-gluten-1-kgs-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Corn Flakes",cat:"cereals",eco:false,gf:true,
+   img:"https://imgs3.schaer.com/es/image/product/corn_flakes/_p880_corn_flakes_1007030003_16408.jpg",
+   desc:"Crispy corn flakes · 250g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/cereais-corn-flakes-sem-gluten-schar-4278262.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/29568-corn-flakes-sem-gluten-250-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Petit biscuits",cat:"snacks",eco:false,gf:true,
+   img:"https://imgs0.schaer.com/es/image/product/petit_biscotto_classico/_p880_petit_biscotto_classico_10447_16170.jpg",
+   desc:"4 × 41g · on-the-go snack",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bolachas-petit-sem-gluten-schar-5446515.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/346337-bolacha-de-manteiga-sem-gluten-165-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Muffins",cat:"snacks",eco:false,gf:true,
+   img:"https://imgs0.schaer.com/es/image/product/muffin/_p880_muffin_10436_15895.jpg",
+   desc:"4 × 65g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/muffins-sem-gluten-schar-5675796.html",c:"b-cont"},
+   {l:"🛒 Celeiro",u:"https://www.celeiro.pt/619257-queques-sem-gluten-225-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Breadcrumbs",cat:"flour",eco:false,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/1/0/104999-pao-ralado-sem-gluten-300-gramas-kg-sch_r20240223115433.jpg",
+   desc:"Versatile and Crunchy, Gluten-Free Bread Crumbs",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/104999-pao-ralado-sem-gluten-300-gramas-kg-schar",c:"b-cel"}]},  
+  {brand:"schar",name:"Wraps",cat:"bread",eco:false,gf:true,
+   img:"https://www.schaer.com/sites/default/files/styles/packaging/public/2022-07/Products_Bakery_PFP0670-01_Wraps_160g_SUD_Front.png.webp?itok=3D7PWdt6",
+   desc:"Gluten free wraps ready to roll and eat",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/183482-pao-tipo-wrap-sem-gluten-160-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Dried Yeast",cat:"flour",eco:false,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/2/1/214452-fermento-sem-gluten-20-gramas-kg-sch_r20220501141815.jpg",
+   desc:"Used for savoury doughs such as bread, pizzas, or focaccias",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/214452-fermento-sem-gluten-20-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Lasagne",cat:"Pasta",eco:false,gf:true,
+   img:"https://www.schaer.com/sites/default/files/styles/packaging/public/2026-04/3pfb0225-01_front_lasagne_250g.png.webp?itok=7QE1Q5Bo",
+   desc:"Fresh and easy to bake lasagne",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/722315-massa-para-lasanha-sem-ovo-250-gramas-kg-schar",c:"b-cel"}]},
+  {brand:"schar",name:"Chicken Fingers",cat:"snacks",eco:false,gf:true,
+   img:"https://www.schaer.com/sites/default/files/styles/packaging/public/2024-01/products_meals_3pfp0108-14_chickenfingers_375g_front.png.webp?itok=a50ijo0n",
+   desc:"Tasty, crispy chicken fingers to share amongst the whole family",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/360401-barritas-crocantes-de-frango-congeladas-sem-gluten-375-gramas-kg-schar",c:"b-cel"}]},
+
+  // ── RUDE HEALTH — Bebidas vegetais ────────────────────────
+  {brand:"rudehealth",name:"Oat drink",cat:"drinks",eco:true,gf:true,
+   img:C+"611/6116929-frente.jpg",
+   desc:"Organic GF oats · no added sugar · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-aveia-rude-health-rude-health-6116929.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Oat drink — no sugar",cat:"drinks",eco:true,gf:true,
+   img:C+"775/7759690-frente.jpg",
+   desc:"Zero sugars · organic GF oats · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-aveia-sem-acucar-rude-health-7759690.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Oat drink Barista",cat:"drinks",eco:true,gf:true,
+   img:C+"777/7777742-frente.jpg",
+   desc:"Barista blend · organic GF · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-aveia-barista-rude-health-7777742.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Almond drink — no sugar",cat:"drinks",eco:true,gf:true,
+   img:C+"775/7759689-frente.jpg",
+   desc:"0% sugars · organic · GF · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-amendoa-sem-acucar-rude-health-7759689.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Almond & toasted oat drink",cat:"drinks",eco:true,gf:true,
+   img:C+"748/7483833-frente.jpg",
+   desc:"Almond + toasted oat · organic · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-amendoa-e-aveia-torrada-rude-health-7483833.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Brown rice drink",cat:"drinks",eco:true,gf:true,
+   img:C+"611/6116931-frente.jpg",
+   desc:"Organic · GF · dairy free · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-arroz-integral-rude-health-6116931.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Coconut drink",cat:"drinks",eco:true,gf:true,
+   img:C+"611/6116933-frente.jpg",
+   desc:"Organic · GF · vegan · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-coco-rude-health-6116933.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Coconut drink Barista",cat:"drinks",eco:true,gf:true,
+   img:C+"777/7777707-frente.jpg",
+   desc:"Barista blend · organic · GF · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-coco-barista-rude-health-7777707.html",c:"b-cont"}]},
+  {brand:"rudehealth",name:"Hazelnut drink",cat:"drinks",eco:true,gf:true,
+   img:C+"611/6116934-frente.jpg",
+   desc:"Organic · GF · no added sugar · 1L",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bebida-vegetal-de-avela-rude-health-6116934.html",c:"b-cont"}]},
+
+  // ── RUMMO (confirmed Continente.pt) ───────────────────────
+  {brand:"rummo",name:"Spaghetti GF",cat:"pasta",eco:false,gf:true,
+   img:"https://www.pastarummo.it/wp-content/uploads/2019/03/01_pack_senza_glutine.jpg",
+   desc:"Corn & brown rice · bronze-cut · 400g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/massa-esparguete-sem-gluten-rummo-rummo-5884054.html",c:"b-cont"}]},
+  {brand:"rummo",name:"Penne Rigate GF",cat:"pasta",eco:false,gf:true,
+   img:"https://www.pastarummo.it/wp-content/uploads/2019/03/08_pack_senza_glutine.jpg",
+   desc:"Corn & brown rice · bronze-cut · 400g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/massa-penne-rigate-sem-gluten-rummo-rummo-5884008.html",c:"b-cont"}]},
+  {brand:"rummo",name:"Fusilli GF",cat:"pasta",eco:false,gf:true,
+   img:"https://www.pastarummo.it/wp-content/uploads/2019/03/05_pack_senza_glutine.jpg",
+   desc:"Corn & brown rice · bronze-cut · 400g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/massa-fusilli-sem-gluten-rummo-rummo-5884021.html",c:"b-cont"}]},
+  {brand:"rummo",name:"Linguine GF",cat:"pasta",eco:false,gf:true,
+   img:"https://www.pastarummo.it/wp-content/uploads/2019/03/02_pack_senza_glutine.jpg",
+   desc:"Corn & brown rice · bronze-cut · 400g",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/massa-linguine-sem-gluten-rummo-5884022.html",c:"b-cont"}]},
+  
+  // ── ECOCESTA ──────────────────────────────────────────────
+  {brand:"ecocesta",name:"Buckwheat spaghetti",cat:"pasta",eco:true,gf:true,
+   img:"https://m.media-amazon.com/images/I/71ssBCWmumS._AC_SL1500_.jpg",
+   desc:"Organic certified GF · 500g",
+   links:[{l:"🛒 Amazon",u:"https://www.amazon.es/Ecocesta-Organic-Spaghetti-Protein-Buckwheat/dp/B08D3XT9T2/ref=sr_1_2_sspa?crid=624AIG5R9WJW&dib=eyJ2IjoiMSJ9.guXfdE0zo3_uWgelQeXjiET8T-UfxNyDMRzHu3tC-MQ_4cJfU5rElSzR55ZDCe-XxHpfaVTSj62IeH14jWPk2jnNCQ0111UN18FvZm6zqIQGjZMtAOKJtPBQsoANMgZ8QF7293Re48oPsduFEFZrar6NHejoTTbJ-04pmN6pMcZJD9pHdFNokTJDqP-YbGqDrntJfg4Ufj_v5Pk7D00QunT6ebFnwX2nXtHdmXvF4dkXSq09DFh5zsAL5Gt3xgFr3CrB57N5A0JMlpykMyWGLeNbFUBW4s_FeVOh7MsmxQI.uoCtM9Fo3YJOpUKU9KE58z8fG0GCE4FG0zOxvflHZxs&dib_tag=se&keywords=pasta+de+trigo+sarraceno&qid=1781016579&sprefix=pasta+de+tr%2Caps%2C89&sr=8-2-spons&aref=76PUlj7TR5&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",c:"b-cel2"}]},
+  
+  // ── NATUREFOODS ───────────────────────────────────────────
+  {brand:"naturefoods",name:"Buckwheat spaghetti",cat:"pasta",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/1/418584-esparguete-trigo-sarraceno-bio-sem-gluten-500-gramas-kg-naturefoods20241115093940.jpg",
+   desc:"Organic Gluten-Free Buckwheat Spaghetti",
+   links:[
+    {l:"🛒 Naturefoods",u:"https://www.naturefoods.es/418584-espaguetis-de-trigo-sarraceno-ecologicos-sin-gluten-500-gramos-kg-naturefoods?_gl=1*1vwpddc*_up*MQ..*_gs*MQ..",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/418584-esparguete-trigo-sarraceno-bio-sem-gluten-500-gramas-kg-naturefoods",c:"b-cel"}]},
+  {brand:"naturefoods",name:"Almond flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/1/5/159920-farinha-amendoa-bio-200-gramas-kg-naturefoods20260504160007.jpg",
+   desc:"Organic Gluten-Free Almond Flour",
+   links:[
+    {l:"🛒 Naturefoods",u:"https://www.naturefoods.es/159920-harina-de-almendras-bio-200-gramos-kg-naturefoods",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/159920-farinha-amendoa-bio-200-gramas-kg-naturefoods",c:"b-cel"}]},
+  {brand:"naturefoods",name:"Buckwheat flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/5/4/541060-farinha-de-trigo-sarraceno-bio-500-gramas-kg-naturefoods20251003152816.jpg",
+   desc:"Organic Gluten-Free Buckwheat Flour",
+   links:[
+    {l:"🛒 Naturefoods",u:"https://www.naturefoods.es/541060-harina-de-trigo-sarraceno-ecologica-500-gramos-kg-naturefoods",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/541060-farinha-de-trigo-sarraceno-bio-500-gramas-kg-naturefoods",c:"b-cel"}]},
+  {brand:"naturefoods",name:"Multifloral honey",cat:"sweet",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/3/432269-mel-biologico-multifloral-250-gramas-kg-naturefoods20260422164322.jpg",
+   desc:"Organic Gluten-Free Multifloral Honey",
+   links:[
+    {l:"🛒 Naturefoods",u:"https://www.naturefoods.es/432269-miel-ecologica-multifloral-250-gramos-kg-naturefoods",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/432269-mel-biologico-multifloral-250-gramas-kg-naturefoods",c:"b-cel"}]},
+
+  // ── PROVIDA ───────────────────────────────────────────
+  {brand:"provida",name:"Quinoa Flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/ab47c9b380996e75c0120c5dd6b1c106/2/1/218764-farinha-de-quinoa-bio-500-gramas-kg-provida20230712153018.jpg",
+   desc:"Organic Gluten-Free Quinoa Flour",
+   links:[
+    {l:"🛒 Naturefoods",u:"https://www.naturefoods.es/218764-harina-de-quinoa-ecologica-500-gramos-kg-provida",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/218764-farinha-de-quinoa-bio-500-gramas-kg-provida",c:"b-cel"}]},
+  {brand:"provida",name:"Almond flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/4/449465-farinha-de-amendoa-200-gramas-kg-provida20230922145341.jpg",
+   desc:"Organic Gluten-Free Almond Flour",
+   links:[{l:"🛒 Naturefoods",u:"https://www.naturefoods.es/449465-harina-de-almendra-200-gramos-kg-provida",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/449465-farinha-de-amendoa-200-gramas-kg-provida",c:"b-cel"}]},
+  {brand:"provida",name:"Oat flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/5/0/501958-farinha-de-aveia-sem-gluten-250-gramas-kg-provida20230809162632.jpg",
+   desc:"Organic Gluten-Free Oat Flour",
+   links:[{l:"🛒 Naturefoods",u:"https://www.naturefoods.es//501958-harina-de-avena-sin-gluten-250-gramos-kg-provida",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/501958-farinha-de-aveia-sem-gluten-250-gramas-kg-provida",c:"b-cel"}]},
+  {brand:"provida",name:"Brown rice flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/3/43366-farinha-de-arroz-integral-bio-500-gramas-kg-provida20220501112425.jpg",
+   desc:"Organic Gluten-Free Oat Flour",
+   links:[{l:"🛒 Naturefoods",u:"https://www.naturefoods.es/43366-harina-de-arroz-ecologica-500-gramos-kg-provida",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/43366-farinha-de-arroz-integral-bio-500-gramas-kg-provida",c:"b-cel"}]},
+  {brand:"provida",name:"Coconut flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/3/3/331333-farinha-de-coco-bio-250-gramas-kg-provida20220501170346.jpg",
+   desc:"Organic Gluten-Free Coconut Flour",
+   links:[{l:"🛒 Naturefoods",u:"https://www.naturefoods.es/331333-harina-de-coco-ecologica-250-gramos-kg-provida",c:"b-nat"},
+    {l:"🛒 Celeiro",u:"https://www.celeiro.pt/331333-farinha-de-coco-bio-250-gramas-kg-provida",c:"b-cel"}]},
+
+  // ── VIDA CELEIRO ───────────────────────────────────────────────
+  {brand:"celeiro",name:"Buckwheat Flour",cat:"Flour",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/3/434485-farinha-de-trigo-sarraceno-sem-gluten-biologica-500-gramas-kg-vida-celeiro20260421160339.jpg",
+   desc:"Organic Gluten-Free Buckwheat Flour",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/434485-farinha-de-trigo-sarraceno-sem-gluten-biologica-500-gramas-kg-vida-celeiro",c:"b-cel"}]},
+  {brand:"celeiro",name:"Chia seeds",cat:"nuts",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/3/434539-sementes-de-chia-biologicas-125-gramas-kg-vida-celeiro20260601140745.jpg",
+   desc:"",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/434539-sementes-de-chia-biologicas-125-gramas-kg-vida-celeiro",c:"b-cel"}]},
+  {brand:"celeiro",name:"Coconut sugar",cat:"sweet",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/4/441421-acucar-de-coco-bio-200-gramas-kg-vida-celeiro20241223145601.jpg",
+   desc:"",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/441421-acucar-de-coco-bio-200-gramas-kg-vida-celeiro",c:"b-cel"}]},
+  {brand:"celeiro",name:"Pumpkin seeds",cat:"nuts",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/3/436496-sementes-de-abobora-bio-250-gramas-kg-vida-celeiro20260320152408.jpg",
+   desc:"",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/436496-sementes-de-abobora-bio-250-gramas-kg-vida-celeiro",c:"b-cel"}]},
+  {brand:"celeiro",name:"Sunflour seeds",cat:"nuts",eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/4/2/428484-sementes-de-girassol-bio-200-gramas-kg-vida-celeiro20230607163037.jpg",
+   desc:"",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/428484-sementes-de-girassol-bio-200-gramas-kg-vida-celeiro",c:"b-cel"}]},
+  {brand:"celeiro",name:"Goji berries",cat:["snacks","nuts"],eco:true,gf:true,
+   img:"https://www.celeiro.pt/media/catalog/product/cache/42fa53b6527f136e0c1bc51385dbc32e/5/1/517584-bagas-goji-bio-150-gramas-kg-vida-celeiro20260504172745.jpg",
+   desc:"",
+   links:[{l:"🛒 Celeiro",u:"https://www.celeiro.pt/517584-bagas-goji-bio-150-gramas-kg-vida-celeiro",c:"b-cel"}]},
+
+   // ── CONTINENTE BIO ───────────────────────────────────────────────
+  {brand:"continente",name:"Coconut Strips",cat:"nuts",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw2e60bbc3/images/col/718/7181882-frente.jpg?sw=2000&sh=2000",
+   desc:"Organic Gluten-Free Coconut Strips",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/tiras-de-coco-biologicas-continente-bio-continente-bio-7181882.html",c:"b-cont"}]},
+  {brand:"continente",name:"Long Grain Basmati Rice",cat:"pasta",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw30ffa946/images/col/686/6866580-frente.jpg?sw=2000&sh=2000",
+   desc:"Basmati Rice",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/arroz-basmati-longo-continente-bio-continente-bio-6866580.html",c:"b-cont"}]},
+  {brand:"continente",name:"Millet",cat:"pasta",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw0b2a3fea/images/col/765/7651853-frente.jpg?sw=2000&sh=2000",
+   desc:"Millet",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/millet-continente-bio-continente-bio-7651853.html",c:"b-cont"}]},
+  {brand:"continente",name:"Coconut Oil",cat:"oil",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw846a7e7b/images/col/661/6619082-frente.jpg?sw=2000&sh=2000",
+   desc:"Coconut Oil",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/oleo-de-coco-virgem-continente-bio-continente-bio-6619082.html",c:"b-cont"}]},
+  {brand:"continente",name:"Pumpkin seeds",cat:"nut",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dwf9bae610/images/col/662/6627432-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/sementes-de-abobora-biologicas-continente-bio-continente-bio-6627432.html",c:"b-cont"}]},
+  {brand:"continente",name:"Sunflower Seeds",cat:"nuts",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw92ca41d0/images/col/662/6627430-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/sementes-de-girassol-biologicas-continente-bio-continente-bio-6627430.html",c:"b-cont"}]},
+  {brand:"continente",name:"Chia Seeds",cat:"nuts",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dwff4fff84/images/col/661/6616056-amb.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/sementes-de-chia-biologicas-continente-bio-continente-bio-6616056.html",c:"b-cont"}]},
+  {brand:"continente",name:"Coconut Flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dwfd656c3f/images/col/711/7110619-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/farinha-de-coco-continente-bio-continente-bio-7110619.html",c:"b-cont"}]},
+  {brand:"continente",name:"Coconut Sugar",cat:"sweet",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw5d45be8a/images/col/711/7110625-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/acucar-de-coco-continente-bio-continente-bio-7110625.html",c:"b-cont"}]},
+  {brand:"continente",name:"Apple cider vinegar",cat:"oil",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw89506526/images/col/745/7451607-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/vinagre-de-sidra-continente-bio-continente-bio-7451607.html",c:"b-cont"}]},
+  {brand:"continente",name:"Flowres Honey",cat:"sweet",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw9acd6d63/images/col/772/7723311-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/mel-de-flores-continente-bio-continente-bio-7723311.html",c:"b-cont"}]},
+  {brand:"continente",name:"Rice Flour",cat:"flour",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw91899a6f/images/col/765/7651847-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/farinha-de-arroz-integral-continente-bio-continente-bio-7651847.html",c:"b-cont"}]},
+  {brand:"continente",name:"Cashew",cat:"nuts",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw20092520/images/col/718/7184113-cima.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/caju-biologico-continente-bio-continente-bio-7184113.html",c:"b-cont"}]},
+  {brand:"continente",name:"quinoa",cat:"pasta",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw940b2f4f/images/col/690/6903250-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/quinoa-real-continente-bio-continente-bio-6903250.html",c:"b-cont"}]},
+  {brand:"continente",name:"Hemp seeds",cat:"nuts",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dwd4bf2f04/images/col/662/6627437-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/sementes-de-canhamo-biologicas-continente-bio-continente-bio-6627437.html",c:"b-cont"}]},
+  {brand:"continente",name:"Almond butter",cat:["snacks","nuts"],eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw72401a5c/images/col/779/7794438-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/pasta-de-amendoa-continente-bio-continente-bio-7794438.html",c:"b-cont"}]},
+  {brand:"continente",name:"Rice Cakes",cat:"snacks",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw6e338bf5/images/col/696/6968391-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/tortitas-de-arroz-sem-gluten-continente-bio-continente-bio-6968391.html",c:"b-cont"}]},
+  {brand:"continente",name:"Walnut",cat:"nuts",eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dwc6b28034/images/col/718/7184053-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/noz-metades-biologica-continente-bio-continente-bio-7184053.html",c:"b-cont"}]},
+  {brand:"continente",name:"Goji berries",cat:["snacks","nuts"],eco:true,gf:true,
+   img:"https://www.continente.pt/dw/image/v2/BDVS_PRD/on/demandware.static/-/Sites-col-master-catalog/default/dw14b0ab86/images/col/662/6625958-frente.jpg?sw=2000&sh=2000",
+   desc:"",
+   links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/bagas-de-goji-biologicas-continente-bio-continente-bio-6625958.html",c:"b-cont"}]},
+];
+
+const BC={
+  schar:{bg:"#e8edf5",color:"#1a3060",label:"SC"},
+  rudehealth:{bg:"#fde8e8",color:"#8b1a1a",label:"RH"},
+  rummo:{bg:"#fff0e0",color:"#8b3a00",label:"RM"},
+  ecocesta:{bg:"#e8f5e9",color:"#1a5e20",label:"EC"},
+  naturefoods:{bg:"#fff8e1",color:"#7d4700",label:"NF"},
+  provida:{bg:"#fff8e1",color:"#7d4700",label:"PR"},
+  celeiro:{bg:"#ede9fe",color:"#4a148c",label:"VC"},
+  continente:{bg:"#ede9fe",color:"#4a148c",label:"CB"},
+};
+const BN={schar:"Dr. Schär",rudehealth:"Rude Health",rummo:"Rummo",ecocesta:"Ecocesta",naturefoods:"Naturefoods",provida:"Provida",celeiro:"Vida Celeiro",continente:"Continente BIO"};
+
+let aB="all",aC="all";
+
+document.getElementById("brandCtrl").addEventListener("click",e=>{
+  const b=e.target.closest(".filter-btn");if(!b)return;
+  aB=b.dataset.brand;
+  document.querySelectorAll("#brandCtrl .filter-btn").forEach(x=>x.classList.toggle("active",x===b));
+  render();
+});
+document.getElementById("catCtrl").addEventListener("click",e=>{
+  const b=e.target.closest(".filter-btn");if(!b)return;
+  aC=b.dataset.cat;
+  document.querySelectorAll("#catCtrl .filter-btn").forEach(x=>x.classList.toggle("active",x===b));
+  render();
+});
+
+function render(){
+  const q=document.getElementById("searchInput").value.toLowerCase();
+  const f=DATA.filter(p=>
+    (aB==="all"||p.brand===aB)&&
+    (aC==="all"||p.cat===aC||p.isStore)&&
+    (!q||p.name.toLowerCase().includes(q)||BN[p.brand].toLowerCase().includes(q)||p.desc.toLowerCase().includes(q))
+  );
+  document.getElementById("count").textContent=f.length+" product"+(f.length!==1?"s":"")+" found";
+  const g=document.getElementById("grid");
+  if(!f.length){g.innerHTML='<div class="empty">No products found</div>';return;}
+  g.innerHTML=f.map(p=>{
+    const bc=BC[p.brand];
+    const tags=[];
+    if(p.gf)tags.push('<span class="tag tag-gf">🌾 GF</span>');
+    if(p.eco)tags.push('<span class="tag tag-eco">🍃 Organic</span>');
+    if(p.isStore)tags.push('<span class="tag tag-store">🏪 Store</span>');
+    const btns=p.links.map(l=>`<a href="${l.u}" target="_blank" class="buy-btn ${l.c}">${l.l}</a>`).join("");
+    const imgHtml=`<div class="card-img-wrap"><img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'card-img-placeholder\\'>🛒</div>'"></div>`;
+    return `<div class="card">
+      ${imgHtml}
+      <div class="card-body">
+        <div class="brand-row">
+          <div class="brand-dot" style="background:${bc.bg};color:${bc.color}">${bc.label}</div>
+          <span class="brand-name">${BN[p.brand]}</span>
+        </div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-badges">${tags.join("")}</div>
+        <div class="buy-links">${btns}</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+render();
+</script>
+</body>
+</html>
