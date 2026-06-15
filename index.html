@@ -80,6 +80,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="filter-btn" data-brand="provida">Provida</button>
   <button class="filter-btn" data-brand="celeiro">Vida Celeiro</button>
   <button class="filter-btn" data-brand="continente">Continente BIO</button>
+  <button class="filter-btn" data-brand="amazon">Amazon</button>
 </div>
 <div class="controls" id="catCtrl">
   <button class="filter-btn active" data-cat="all">All categories</button>
@@ -226,6 +227,16 @@ const DATA=[
    links:[{l:"🛒 Continente",u:"https://www.continente.pt/produto/massa-linguine-sem-gluten-rummo-5884022.html",c:"b-cont"}]},
   
   // ── ECOCESTA ──────────────────────────────────────────────
+  {brand:"ecocesta",name:"Buckwheat spaghetti",cat:"pasta",eco:true,gf:true,
+   img:"https://m.media-amazon.com/images/I/71ssBCWmumS._AC_SL1500_.jpg",
+   desc:"Organic certified GF · 500g",
+   links:[{l:"🛒 Amazon",u:"https://www.amazon.es/Ecocesta-Organic-Spaghetti-Protein-Buckwheat/dp/B08D3XT9T2/ref=sr_1_2_sspa?crid=624AIG5R9WJW&dib=eyJ2IjoiMSJ9.guXfdE0zo3_uWgelQeXjiET8T-UfxNyDMRzHu3tC-MQ_4cJfU5rElSzR55ZDCe-XxHpfaVTSj62IeH14jWPk2jnNCQ0111UN18FvZm6zqIQGjZMtAOKJtPBQsoANMgZ8QF7293Re48oPsduFEFZrar6NHejoTTbJ-04pmN6pMcZJD9pHdFNokTJDqP-YbGqDrntJfg4Ufj_v5Pk7D00QunT6ebFnwX2nXtHdmXvF4dkXSq09DFh5zsAL5Gt3xgFr3CrB57N5A0JMlpykMyWGLeNbFUBW4s_FeVOh7MsmxQI.uoCtM9Fo3YJOpUKU9KE58z8fG0GCE4FG0zOxvflHZxs&dib_tag=se&keywords=pasta+de+trigo+sarraceno&qid=1781016579&sprefix=pasta+de+tr%2Caps%2C89&sr=8-2-spons&aref=76PUlj7TR5&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",c:"b-cel2"}]},
+  
+  // ── AMAZON ──────────────────────────────────────────────
+  {brand:"amazon",name:"Psyllium Husk",cat:"flour",eco:false,gf:true,
+   img:"https://images-eu.ssl-images-amazon.com/images/I/71jGuMvmM8L._AC_UL348_SR348,348_.jpg",
+   desc:"Psyllium Husk | 450g | High Fiber | Vegan, Gluten Free & Lactose Free",
+   links:[{l:"🛒 Amazon",u:"https://www.amazon.es/Ecocesta-Organic-Spaghetti-Protein-Buckwheat/dp/B08D3XT9T2/ref=sr_1_2_sspa?crid=624AIG5R9WJW&dib=eyJ2IjoiMSJ9.guXfdE0zo3_uWgelQeXjiET8T-UfxNyDMRzHu3tC-MQ_4cJfU5rElSzR55ZDCe-XxHpfaVTSj62IeH14jWPk2jnNCQ0111UN18FvZm6zqIQGjZMtAOKJtPBQsoANMgZ8QF7293Re48oPsduFEFZrar6NHejoTTbJ-04pmN6pMcZJD9pHdFNokTJDqP-YbGqDrntJfg4Ufj_v5Pk7D00QunT6ebFnwX2nXtHdmXvF4dkXSq09DFh5zsAL5Gt3xgFr3CrB57N5A0JMlpykMyWGLeNbFUBW4s_FeVOh7MsmxQI.uoCtM9Fo3YJOpUKU9KE58z8fG0GCE4FG0zOxvflHZxs&dib_tag=se&keywords=pasta+de+trigo+sarraceno&qid=1781016579&sprefix=pasta+de+tr%2Caps%2C89&sr=8-2-spons&aref=76PUlj7TR5&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1",c:"b-cel2"}]},
   {brand:"ecocesta",name:"Buckwheat spaghetti",cat:"pasta",eco:true,gf:true,
    img:"https://m.media-amazon.com/images/I/71ssBCWmumS._AC_SL1500_.jpg",
    desc:"Organic certified GF · 500g",
@@ -399,8 +410,9 @@ const BC={
   provida:{bg:"#fff8e1",color:"#7d4700",label:"PR"},
   celeiro:{bg:"#ede9fe",color:"#4a148c",label:"VC"},
   continente:{bg:"#ede9fe",color:"#4a148c",label:"CB"},
+  amazon:{bg:"#ede9fe",color:"#4a148c",label:"AM"},
 };
-const BN={schar:"Dr. Schär",rudehealth:"Rude Health",rummo:"Rummo",ecocesta:"Ecocesta",naturefoods:"Naturefoods",provida:"Provida",celeiro:"Vida Celeiro",continente:"Continente BIO"};
+const BN={schar:"Dr. Schär",rudehealth:"Rude Health",rummo:"Rummo",ecocesta:"Ecocesta",naturefoods:"Naturefoods",provida:"Provida",celeiro:"Vida Celeiro",continente:"Continente BIO",amazon:"Amazon};
 
 let aB="all",aC="all";
 
